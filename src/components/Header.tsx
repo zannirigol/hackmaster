@@ -1,10 +1,23 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Terminal, Menu, X } from "lucide-react";
+import { Terminal, Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthClick = () => {
+    if (user) {
+      signOut();
+    } else {
+      navigate("/auth");
+    }
+  };
+
 
   return (
     <motion.header
@@ -32,8 +45,15 @@ const Header = () => {
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-primary transition-colors font-mono">
               Preços
             </a>
-            <Button size="sm">
-              Acessar
+            <Button size="sm" onClick={handleAuthClick}>
+              {user ? (
+                <>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </>
+              ) : (
+                "Acessar"
+              )}
             </Button>
           </nav>
 
@@ -69,8 +89,15 @@ const Header = () => {
               >
                 Preços
               </a>
-              <Button size="sm" className="w-fit">
-                Acessar
+              <Button size="sm" className="w-fit" onClick={handleAuthClick}>
+                {user ? (
+                  <>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sair
+                  </>
+                ) : (
+                  "Acessar"
+                )}
               </Button>
             </div>
           </motion.nav>
