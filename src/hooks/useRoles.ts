@@ -23,6 +23,7 @@ export const useRoles = (): UseRolesReturn => {
 
   const fetchRoles = async () => {
     if (!user) {
+      console.log('ROLES FROM DB: No user found');
       setRoles([]);
       setLoading(false);
       return;
@@ -36,6 +37,8 @@ export const useRoles = (): UseRolesReturn => {
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id);
+
+      console.log('ROLES FROM DB:', data, fetchError);
 
       if (fetchError) {
         throw fetchError;
